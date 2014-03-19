@@ -5,8 +5,9 @@
 //  Created by Andrew Russell on 12/17/13.
 //
 //
-
+#import "ServerViewController.h"
 #import "SongViewController.h"
+#import "DJTrack.h"
 
 @interface SongViewController ()
 @property(nonatomic, retain) NSMutableArray *songs;
@@ -95,25 +96,15 @@
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    //Send the song here
-    //[self.server connectToRemoteService:[self.services objectAtIndex: indexPath.row]];
+    //#WARNING : This isn't the right place for the remote server. 
+    [self.server connectToRemoteService:[[((ServerViewController *)self.presentingViewController)
+                                          services] objectAtIndex:0]];
     NSError *error = nil;
     
-    NSArray *track = [self.songs objectAtIndex:indexPath.row];
+    DJTrack *track = [self.songs objectAtIndex:indexPath.row];
     
     NSString *str = @"";
-    
-    str = [str stringByAppendingString:[track objectAtIndex:0]];
-    str = [str stringByAppendingString:@";"];
-    str = [str stringByAppendingString:[track objectAtIndex:1]];
-    str = [str stringByAppendingString:@";"];
-    str = [str stringByAppendingString:[track objectAtIndex:2]];
-    str = [str stringByAppendingString:@";"];
-//#warning find out what to do here
-    str = [str stringByAppendingString:[track objectAtIndex:3]];
-    str = [str stringByAppendingString:@";"];
-
-   
+    str = [str stringByAppendingString:[DJTrack makeMessageFromTrack:track]];
     NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
     
     

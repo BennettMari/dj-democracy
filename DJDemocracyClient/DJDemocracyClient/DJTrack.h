@@ -17,6 +17,10 @@
 
 + (id) newTrackCalled:(NSString *)title by:(NSString *)artist at:(NSString *)location;
 
++ (id) makeTrackFromMessage:(NSString *)message;
+
++ (NSString*) makeMessageFromTrack:(DJTrack*) track;
+
 - (NSInteger) getVoteCount;
 
 - (void) setVoteCount:(NSInteger)voteCount;

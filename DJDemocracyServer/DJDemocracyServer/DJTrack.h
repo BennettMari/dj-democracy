@@ -18,6 +18,8 @@
 
 + (id) newTrackCalled:(NSString *)title by:(NSString *)artist at:(NSString *)location;
 
++ (id) makeTrackFromMessage:(NSString *)message;
+
 - (NSInteger) getVoteCount;
 
 - (void) setVoteCount:(NSInteger)voteCount;

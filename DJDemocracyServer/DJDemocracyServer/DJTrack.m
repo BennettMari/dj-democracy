@@ -20,6 +20,12 @@
     return track;
 }
 
++ (id) makeTrackFromMessage:(NSString *)message
+{
+    NSArray *array = [message componentsSeparatedByString:@";" ];
+    return [DJTrack newTrackCalled:[array objectAtIndex:0] by:[array objectAtIndex:1] at:[array objectAtIndex:2]];
+}
+
 - (void) incVoteCount {
     self->_voteCount = self->_voteCount + 1;
 }

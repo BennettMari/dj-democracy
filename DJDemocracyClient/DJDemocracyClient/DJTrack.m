@@ -20,6 +20,24 @@
     return track;
 }
 
++ (id) makeTrackFromMessage:(NSString *)message
+{
+    NSArray *array = [message componentsSeparatedByString:@";" ];
+    return [DJTrack newTrackCalled:[array objectAtIndex:0] by:[array objectAtIndex:1] at:[array objectAtIndex:2]];
+}
+
++ (NSString*) makeMessageFromTrack:track {
+    NSString *str = @"";
+    str = [str stringByAppendingString:[track getTitle]];
+    str = [str stringByAppendingString:@";"];
+    str = [str stringByAppendingString:[track getArtist]];
+    str = [str stringByAppendingString:@";"];
+    str = [str stringByAppendingString:[track getLocation]];
+    str = [str stringByAppendingString:@";"];
+    //Stuff about current votecount
+    return str;
+}
+
 - (void) incVoteCount {
     self->_voteCount = self->_voteCount + 1;
 }

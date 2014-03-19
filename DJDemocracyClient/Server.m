@@ -291,10 +291,10 @@ static void SocketAcceptedConnectionCallBack(CFSocketRef socket,
 
 - (void)netServiceDidResolveAddress:(NSNetService *)service {
 	assert(service == self.currentlyResolvingService);
-    
+    /*Testing to eliminate seg_fault errs.
     [self.currentlyResolvingService stop];
     self.currentlyResolvingService = nil;
-	
+	*/
     [self _remoteServiceResolved:service];
 }
 

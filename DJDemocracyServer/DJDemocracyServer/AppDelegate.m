@@ -128,12 +128,10 @@
     
     //NSLog(message);
     
-    NSArray *array = [message componentsSeparatedByString:@";"];
-    
-    DJTrack *track = [DJTrack newTrackCalled:[array objectAtIndex:0] by:[array objectAtIndex:1] at:[array objectAtIndex:2]];
-    [track setVoteCount:[[array objectAtIndex:3] intValue]];
-    
+    //NSArray *array = [message componentsSeparatedByString:@";"];
     //[voteCount objectAtIndex:(NSUInteger)[track objectAtIndex:3]];
+    
+    DJTrack *track = [DJTrack makeTrackFromMessage:message];
     
     //NSLog([track objectAtIndex:2]);
     
@@ -153,11 +151,7 @@
 
 // Find the received track in the playlist and increment its vote count. There might be a better way of doing this?
 - (void)increaseVoteCount:(NSString *)message {
-    NSArray *array = [message componentsSeparatedByString:@";"];
-    
-    DJTrack *track = [DJTrack newTrackCalled:[array objectAtIndex:0] by:[array objectAtIndex:1] at:[array objectAtIndex:2]];
-    [track setVoteCount:[[array objectAtIndex:3] intValue]];
-    
+    DJTrack *track = [DJTrack makeTrackFromMessage:message];
     
     NSInteger i = 0;
     for (i=0; i<[self.playlist count]; i++) {
@@ -234,23 +228,21 @@ NSInteger voteSort(id num1, id num2, void *context) {
     //ETPlaylist *library = [eyetunes libraryPlaylist];
     NSError *error = nil;
     
-    NSLog(@"I am heeeere!");
-    
     //NSUInteger i = 0;
     for (DJTrack *track in self.playlist) {
         //DJTrack *djTrack = [DJTrack newFromTrack:track];
         //NSLog(@"2. %ld", (long)djTrack.voteCount);
+        
         NSData *data = [[self encodeTrack:track] dataUsingEncoding:NSUTF8StringEncoding];
         
         
         //[encoder encodeObject:self->inoutTrack forKey:@"track"];
         //[NSKeyedArchiver archivedDataWithRootObject:track];
-        
         //[[track name] dataUsingEncoding:NSUTF8StringEncoding];
+        
         [NSThread sleepForTimeInterval:0.01f];
         
         NSLog(@"Sending song %@", track.title);
-        
         [self.server sendData:data error:&error];
     }
     
@@ -386,7 +378,7 @@ NSInteger voteSort(id num1, id num2, void *context) {
         self.message = message;
         [self increaseVoteCount:message];
         [self sendSongs:nil];
-        //NSLog(message);
+        NSLog(message);
     } else {
         self.message = @"no data received";
     }

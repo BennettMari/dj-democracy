@@ -75,7 +75,6 @@
     NSLog(@"Server did not start %@", errorDict);
 }
 
-#warning Why isn't this function being called?
 - (void)server:(Server *)server didAcceptData:(NSData *)data {
     NSLog(@"Server did accept data"); // %@", data);
     NSString *message = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];

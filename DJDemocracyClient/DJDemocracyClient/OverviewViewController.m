@@ -6,6 +6,7 @@
 //
 //
 
+#import "ServerViewController.h"
 #import "OverviewViewController.h"
 
 @interface OverviewViewController ()
@@ -17,11 +18,13 @@
 @implementation OverviewViewController
 
 - (void)loadInitialData {
+    /*Dummy data for non-connected testing...
     [self.songs addObject:[DJTrack newTrackCalled:@"Bohemian Rhapsody" by:@"Queen" at:@"..."]];
     [self.songs addObject:[DJTrack newTrackCalled:@"Let It Be" by:@"The Beatles" at:@"..."]];
     [self.songs addObject:[DJTrack newTrackCalled:@"Smoke on the Water" by:@"Deep Purple" at:@"..."]];
     [self.songs addObject:[DJTrack newTrackCalled:@"Hey Jude" by:@"The Beatles" at:@"..."]];
     [self.songs addObject:[DJTrack newTrackCalled:@"Lucy In The Sky With Diamonds" by:@"The Beatles" at:@"..."]];
+     */
     [self.tableView reloadData];
 }
 
@@ -37,9 +40,7 @@
 - (void)viewDidLoad
 {
     NSLog(@"Loading Overview");
-    
     [super viewDidLoad];
-    
     self.songs = [[NSMutableArray alloc] init];
 
     // Uncomment the following line to preserve selection between presentations.
@@ -97,7 +98,27 @@
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    // #WARNING This is isn't the right place for the remote server fix.
+    [self.server connectToRemoteService:[[((ServerViewController *)self.presentingViewController) services] objectAtIndex:0]];
+    
+    NSError *error = nil;
+    DJTrack *track = [self.songs objectAtIndex:indexPath.row];
+    NSString *str = [[NSString alloc] init];
+    str = [str stringByAppendingString:[DJTrack makeMessageFromTrack:track ]];
+    NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
+    
+    
+    //[encoder encodeObject:self->inoutTrack forKey:@"track"];
+    //[NSKeyedArchiver archivedDataWithRootObject:track];
+    
+    //[[track name] dataUsingEncoding:NSUTF8StringEncoding];
+    
+    [self.server sendData:data error:&error];
+    self.songs = [[NSMutableArray alloc] init];
+    
     [tableView deselectRowAtIndexPath:indexPath animated: NO];
+    [tableView reloadData];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
